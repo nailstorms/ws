@@ -2,7 +2,6 @@ package mnu.dao.impl;
 
 import mnu.dao.EmployeeDao;
 import mnu.model.Employee;
-import mnu.util.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +15,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EmployeeDaoImpl implements EmployeeDao {
+    Connection connection;
+
+    public EmployeeDaoImpl(Connection connection){
+        this.connection = connection;
+    }
 
     @Override
     public List<Employee> findAll() {
@@ -25,7 +29,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     @Override
     public Employee findById(int id) {
         Employee employee = null;
-        try (Connection connection = ConnectionUtil.getConnection()) {
+        try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(String.format("select * from employees where id = %d", id));
             rs.next();
@@ -119,7 +123,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private List<Employee> findListQuery(String query) {
         List<Employee> employees = new ArrayList<>();
-        try (Connection connection = ConnectionUtil.getConnection()) {
+        try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {

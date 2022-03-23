@@ -39,7 +39,7 @@ public interface EmployeeWebServiceImpl {
         @WebParam(name = "gender", targetNamespace = "")
         String gender,
         @WebParam(name = "salary", targetNamespace = "")
-        double salary);
+        int salary);
 
     /**
      * 
@@ -77,48 +77,14 @@ public interface EmployeeWebServiceImpl {
 
     /**
      * 
-     * @param name
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByName")
-    @ResponseWrapper(localName = "findByNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByNameResponse")
-    public List<Employee> findByName(
-        @WebParam(name = "name", targetNamespace = "")
-        String name);
-
-    /**
-     * 
-     * @param id
-     * @return
-     *     returns mnu.service.impl.Employee
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findById", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindById")
-    @ResponseWrapper(localName = "findByIdResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByIdResponse")
-    public Employee findById(
-        @WebParam(name = "id", targetNamespace = "")
-        int id);
-
-    /**
-     * 
-     * @param surname
-     * @param name
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByFullName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullName")
-    @ResponseWrapper(localName = "findByFullNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullNameResponse")
-    public List<Employee> findByFullName(
-        @WebParam(name = "name", targetNamespace = "")
-        String name,
-        @WebParam(name = "surname", targetNamespace = "")
-        String surname);
+    @RequestWrapper(localName = "findAll", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAll")
+    @ResponseWrapper(localName = "findAllResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAllResponse")
+    public List<Employee> findAll();
 
     /**
      * 
@@ -145,14 +111,31 @@ public interface EmployeeWebServiceImpl {
 
     /**
      * 
+     * @param name
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findAll", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAll")
-    @ResponseWrapper(localName = "findAllResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAllResponse")
-    public List<Employee> findAll();
+    @RequestWrapper(localName = "findByName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByName")
+    @ResponseWrapper(localName = "findByNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByNameResponse")
+    public List<Employee> findByName(
+        @WebParam(name = "name", targetNamespace = "")
+        String name);
+
+    /**
+     * 
+     * @param salary
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findBySalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalary")
+    @ResponseWrapper(localName = "findBySalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalaryResponse")
+    public List<Employee> findBySalary(
+        @WebParam(name = "salary", targetNamespace = "")
+        int salary);
 
     /**
      * 
@@ -170,17 +153,20 @@ public interface EmployeeWebServiceImpl {
 
     /**
      * 
-     * @param salary
+     * @param surname
+     * @param name
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findBySalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalary")
-    @ResponseWrapper(localName = "findBySalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalaryResponse")
-    public List<Employee> findBySalary(
-        @WebParam(name = "salary", targetNamespace = "")
-        double salary);
+    @RequestWrapper(localName = "findByFullName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullName")
+    @ResponseWrapper(localName = "findByFullNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullNameResponse")
+    public List<Employee> findByFullName(
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "surname", targetNamespace = "")
+        String surname);
 
     /**
      * 
@@ -209,5 +195,19 @@ public interface EmployeeWebServiceImpl {
     public List<Employee> findByGender(
         @WebParam(name = "gender", targetNamespace = "")
         String gender);
+
+    /**
+     * 
+     * @param id
+     * @return
+     *     returns mnu.service.impl.Employee
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findById", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindById")
+    @ResponseWrapper(localName = "findByIdResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByIdResponse")
+    public Employee findById(
+        @WebParam(name = "id", targetNamespace = "")
+        int id);
 
 }

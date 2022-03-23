@@ -20,8 +20,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="birthday" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="gender" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="salary" type="{http://www.w3.org/2001/XMLSchema}double"/>
+ *         &lt;element name="salary" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="surname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -35,6 +36,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlType(name = "employee", propOrder = {
     "birthday",
     "gender",
+    "id",
     "name",
     "salary",
     "surname"
@@ -44,8 +46,9 @@ public class Employee {
     @XmlSchemaType(name = "dateTime")
     protected XMLGregorianCalendar birthday;
     protected String gender;
+    protected int id;
     protected String name;
-    protected double salary;
+    protected int salary;
     protected String surname;
 
     /**
@@ -97,6 +100,22 @@ public class Employee {
     }
 
     /**
+     * Gets the value of the id property.
+     * 
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     * 
+     */
+    public void setId(int value) {
+        this.id = value;
+    }
+
+    /**
      * Gets the value of the name property.
      * 
      * @return
@@ -124,7 +143,7 @@ public class Employee {
      * Gets the value of the salary property.
      * 
      */
-    public double getSalary() {
+    public int getSalary() {
         return salary;
     }
 
@@ -132,7 +151,7 @@ public class Employee {
      * Sets the value of the salary property.
      * 
      */
-    public void setSalary(double value) {
+    public void setSalary(int value) {
         this.salary = value;
     }
 

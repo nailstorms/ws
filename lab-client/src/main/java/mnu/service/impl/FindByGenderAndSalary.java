@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="gender" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="salary" type="{http://www.w3.org/2001/XMLSchema}double"/>
+ *         &lt;element name="salary" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 public class FindByGenderAndSalary {
 
     protected String gender;
-    protected double salary;
+    protected int salary;
 
     /**
      * Gets the value of the gender property.
@@ -64,7 +64,7 @@ public class FindByGenderAndSalary {
      * Gets the value of the salary property.
      * 
      */
-    public double getSalary() {
+    public int getSalary() {
         return salary;
     }
 
@@ -72,7 +72,7 @@ public class FindByGenderAndSalary {
      * Sets the value of the salary property.
      * 
      */
-    public void setSalary(double value) {
+    public void setSalary(int value) {
         this.salary = value;
     }
 
