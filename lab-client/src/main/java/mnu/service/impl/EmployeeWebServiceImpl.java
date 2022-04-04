@@ -26,20 +26,87 @@ public interface EmployeeWebServiceImpl {
 
     /**
      * 
+     * @param birthday
      * @param gender
+     * @param surname
+     * @param name
+     * @param id
      * @param salary
      * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
+     *     returns boolean
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByGenderAndSalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderAndSalary")
-    @ResponseWrapper(localName = "findByGenderAndSalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderAndSalaryResponse")
-    public List<Employee> findByGenderAndSalary(
+    @RequestWrapper(localName = "update", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.Update")
+    @ResponseWrapper(localName = "updateResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.UpdateResponse")
+    public boolean update(
+        @WebParam(name = "id", targetNamespace = "")
+        int id,
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "surname", targetNamespace = "")
+        String surname,
         @WebParam(name = "gender", targetNamespace = "")
         String gender,
+        @WebParam(name = "birthday", targetNamespace = "")
+        String birthday,
         @WebParam(name = "salary", targetNamespace = "")
-        int salary);
+        int salary)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param id
+     * @return
+     *     returns boolean
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "delete", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.Delete")
+    @ResponseWrapper(localName = "deleteResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.DeleteResponse")
+    public boolean delete(
+        @WebParam(name = "id", targetNamespace = "")
+        int id)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param birthday
+     * @param gender
+     * @param surname
+     * @param name
+     * @param salary
+     * @return
+     *     returns int
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "create", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.Create")
+    @ResponseWrapper(localName = "createResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.CreateResponse")
+    public int create(
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "surname", targetNamespace = "")
+        String surname,
+        @WebParam(name = "gender", targetNamespace = "")
+        String gender,
+        @WebParam(name = "birthday", targetNamespace = "")
+        String birthday,
+        @WebParam(name = "salary", targetNamespace = "")
+        int salary)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
 
     /**
      * 
@@ -47,6 +114,8 @@ public interface EmployeeWebServiceImpl {
      * @param name
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -56,7 +125,31 @@ public interface EmployeeWebServiceImpl {
         @WebParam(name = "name", targetNamespace = "")
         String name,
         @WebParam(name = "gender", targetNamespace = "")
-        String gender);
+        String gender)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param gender
+     * @param salary
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findByGenderAndSalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderAndSalary")
+    @ResponseWrapper(localName = "findByGenderAndSalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderAndSalaryResponse")
+    public List<Employee> findByGenderAndSalary(
+        @WebParam(name = "gender", targetNamespace = "")
+        String gender,
+        @WebParam(name = "salary", targetNamespace = "")
+        int salary)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
 
     /**
      * 
@@ -64,6 +157,8 @@ public interface EmployeeWebServiceImpl {
      * @param gender
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -73,18 +168,154 @@ public interface EmployeeWebServiceImpl {
         @WebParam(name = "gender", targetNamespace = "")
         String gender,
         @WebParam(name = "birthday", targetNamespace = "")
-        String birthday);
+        String birthday)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param surname
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findBySurname", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySurname")
+    @ResponseWrapper(localName = "findBySurnameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySurnameResponse")
+    public List<Employee> findBySurname(
+        @WebParam(name = "surname", targetNamespace = "")
+        String surname)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param name
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findByName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByName")
+    @ResponseWrapper(localName = "findByNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByNameResponse")
+    public List<Employee> findByName(
+        @WebParam(name = "name", targetNamespace = "")
+        String name)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param id
+     * @return
+     *     returns mnu.service.impl.Employee
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findById", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindById")
+    @ResponseWrapper(localName = "findByIdResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByIdResponse")
+    public Employee findById(
+        @WebParam(name = "id", targetNamespace = "")
+        int id)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param surname
+     * @param name
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findByFullName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullName")
+    @ResponseWrapper(localName = "findByFullNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullNameResponse")
+    public List<Employee> findByFullName(
+        @WebParam(name = "name", targetNamespace = "")
+        String name,
+        @WebParam(name = "surname", targetNamespace = "")
+        String surname)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param birthday
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findByBirthday", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByBirthday")
+    @ResponseWrapper(localName = "findByBirthdayResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByBirthdayResponse")
+    public List<Employee> findByBirthday(
+        @WebParam(name = "birthday", targetNamespace = "")
+        String birthday)
+        throws InvalidParameterException, MySQLException
+    ;
+
+    /**
+     * 
+     * @param salary
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws InvalidIdException
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findBySalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalary")
+    @ResponseWrapper(localName = "findBySalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalaryResponse")
+    public List<Employee> findBySalary(
+        @WebParam(name = "salary", targetNamespace = "")
+        int salary)
+        throws InvalidIdException, InvalidParameterException, MySQLException
+    ;
 
     /**
      * 
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "findAll", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAll")
     @ResponseWrapper(localName = "findAllResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindAllResponse")
-    public List<Employee> findAll();
+    public List<Employee> findAll()
+        throws MySQLException
+    ;
+
+    /**
+     * 
+     * @param gender
+     * @return
+     *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "findByGender", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGender")
+    @ResponseWrapper(localName = "findByGenderResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderResponse")
+    public List<Employee> findByGender(
+        @WebParam(name = "gender", targetNamespace = "")
+        String gender)
+        throws InvalidParameterException, MySQLException
+    ;
 
     /**
      * 
@@ -94,6 +325,8 @@ public interface EmployeeWebServiceImpl {
      * @param name
      * @return
      *     returns java.util.List<mnu.service.impl.Employee>
+     * @throws MySQLException
+     * @throws InvalidParameterException
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -107,107 +340,8 @@ public interface EmployeeWebServiceImpl {
         @WebParam(name = "gender", targetNamespace = "")
         String gender,
         @WebParam(name = "birthday", targetNamespace = "")
-        String birthday);
-
-    /**
-     * 
-     * @param name
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByName")
-    @ResponseWrapper(localName = "findByNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByNameResponse")
-    public List<Employee> findByName(
-        @WebParam(name = "name", targetNamespace = "")
-        String name);
-
-    /**
-     * 
-     * @param salary
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findBySalary", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalary")
-    @ResponseWrapper(localName = "findBySalaryResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySalaryResponse")
-    public List<Employee> findBySalary(
-        @WebParam(name = "salary", targetNamespace = "")
-        int salary);
-
-    /**
-     * 
-     * @param surname
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findBySurname", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySurname")
-    @ResponseWrapper(localName = "findBySurnameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindBySurnameResponse")
-    public List<Employee> findBySurname(
-        @WebParam(name = "surname", targetNamespace = "")
-        String surname);
-
-    /**
-     * 
-     * @param surname
-     * @param name
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByFullName", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullName")
-    @ResponseWrapper(localName = "findByFullNameResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByFullNameResponse")
-    public List<Employee> findByFullName(
-        @WebParam(name = "name", targetNamespace = "")
-        String name,
-        @WebParam(name = "surname", targetNamespace = "")
-        String surname);
-
-    /**
-     * 
-     * @param birthday
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByBirthday", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByBirthday")
-    @ResponseWrapper(localName = "findByBirthdayResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByBirthdayResponse")
-    public List<Employee> findByBirthday(
-        @WebParam(name = "birthday", targetNamespace = "")
-        String birthday);
-
-    /**
-     * 
-     * @param gender
-     * @return
-     *     returns java.util.List<mnu.service.impl.Employee>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findByGender", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGender")
-    @ResponseWrapper(localName = "findByGenderResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByGenderResponse")
-    public List<Employee> findByGender(
-        @WebParam(name = "gender", targetNamespace = "")
-        String gender);
-
-    /**
-     * 
-     * @param id
-     * @return
-     *     returns mnu.service.impl.Employee
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "findById", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindById")
-    @ResponseWrapper(localName = "findByIdResponse", targetNamespace = "http://impl.service.mnu/", className = "mnu.service.impl.FindByIdResponse")
-    public Employee findById(
-        @WebParam(name = "id", targetNamespace = "")
-        int id);
+        String birthday)
+        throws InvalidParameterException, MySQLException
+    ;
 
 }

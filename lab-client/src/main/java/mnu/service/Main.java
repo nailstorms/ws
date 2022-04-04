@@ -1,98 +1,111 @@
 package mnu.service;
 
 
-import mnu.service.impl.Employee;
-import mnu.service.impl.EmployeeService;
+import mnu.service.impl.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws MalformedURLException {
-        Scanner input = new Scanner(System.in);
-        System.out.println("j2ee? (Y/N, default N)");
-        String yesOrNo = input.nextLine().trim();
-        String urlString;
+        System.out.println("Using standalone server config.");
 
-        switch (yesOrNo) {
-            case "Y":
-                urlString = "http://localhost:8080/lab-j2ee-server-1.0-SNAPSHOT/EmployeeService?wsdl";
-                System.out.println("Using J2EE application server config.");
-                break;
-            case "N":
-            default:
-                urlString = "http://localhost:8080/EmployeeService?wsdl";
-                System.out.println("Using standalone server config.");
-                break;
-        }
-
+        String urlString = "http://localhost:8080/EmployeeService?wsdl";
         URL url = new URL(urlString);
         EmployeeService service = new EmployeeService(url);
 
         Employee employee;
         List<Employee> employeeList;
+        int employeeId;
+        boolean result;
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees.");
-        employeeList = service.getEmployeeWebServiceImplPort().findAll();
-        printEmployees(employeeList);
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching all employees.");
+            employeeList = service.getEmployeeWebServiceImplPort().findAll();
+            printEmployees(employeeList);
+        } catch (MySQLException sqlExc) {
+            System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
+        }
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching employee by id 1.");
-        employee = service.getEmployeeWebServiceImplPort().findById(1);
-        printEmployee(employee);
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching employee by id -1.");
+            employee = service.getEmployeeWebServiceImplPort().findById(-1);
+            printEmployee(employee);
+        } catch (InvalidIdException idExc) {
+            System.err.println("Error message: " + idExc.getFaultInfo().getMessage());
+        } catch (InvalidParameterException ipExc) {
+            System.err.println("Error message: " + ipExc.getFaultInfo().getMessage());
+        } catch (MySQLException sqlExc) {
+            System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
+        }
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by name 'Иван'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByName("Иван");
-        printEmployees(employeeList);
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching employee by inexistent name.");
+            employeeList = service.getEmployeeWebServiceImplPort().findByName(null);
+            printEmployees(employeeList);
+        } catch (InvalidParameterException ipExc) {
+            System.err.println("Error message: " + ipExc.getFaultInfo().getMessage());
+        } catch (MySQLException sqlExc) {
+            System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
+        }
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by surname 'Иванов'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findBySurname("Иванов");
-        printEmployees(employeeList);
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching employee by passing gibberish in birthday.");
+            employeeList = service.getEmployeeWebServiceImplPort().findByBirthday("jkdnfgrfjngkh");
+            printEmployees(employeeList);
+        } catch (InvalidParameterException ipExc) {
+            System.err.println("Error message: " + ipExc.getFaultInfo().getMessage());
+        } catch (MySQLException sqlExc) {
+            System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
+        }
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by gender 'M'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByGender("M");
-        printEmployees(employeeList);
+        try {
+            System.out.println("-----------------------------------------------");
+            System.out.println("Creating new employee.");
+            employeeId = service.getEmployeeWebServiceImplPort().create("Алексей", "Коков", "M", "1999-09-21", 5000);
+            System.out.println("New employee's id - " + employeeId);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by birthday '2000-12-31'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByBirthday("2000-12-31");
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.printf("Fetching employee by id %d.\n", employeeId);
+            employee = service.getEmployeeWebServiceImplPort().findById(employeeId);
+            printEmployee(employee);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by salary 5945.");
-        employeeList = service.getEmployeeWebServiceImplPort().findBySalary(5945);
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.printf("Updating employee with id %d.\n", employeeId);
+            result = service.getEmployeeWebServiceImplPort().update(employeeId, "Евгения", "Иванова", "F", "1986-01-24", 100);
+            System.out.println("Update result - " + result);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by full name 'Иван Иванов'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByFullName("Иван", "Иванов");
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.printf("Fetching employee by id %d.\n", employeeId);
+            employee = service.getEmployeeWebServiceImplPort().findById(employeeId);
+            printEmployee(employee);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by name 'Любовь' and gender 'F'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByNameAndGender("Любовь", "F");
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.printf("Deleting employee with id %d.\n", employeeId);
+            result = service.getEmployeeWebServiceImplPort().delete(employeeId);
+            System.out.println("Delete result - " + result);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by gender 'F' and birthday '1958-04-03'.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByGenderAndBirthday("F", "1958-04-03");
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching employees with full name 'Евгения Иванова'.");
+            employeeList = service.getEmployeeWebServiceImplPort().findByFullName("Евгения", "Иванова");
+            printEmployees(employeeList);
 
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by gender 'F' and salary 678.");
-        employeeList = service.getEmployeeWebServiceImplPort().findByGenderAndSalary("M", 678);
-        printEmployees(employeeList);
-
-        System.out.println("-----------------------------------------------");
-        System.out.println("Fetching all employees by full info (except salary).");
-        employeeList = service.getEmployeeWebServiceImplPort().findByFullInfo("Маргарита", "Соболева", "F", "1946-03-08");
-        printEmployees(employeeList);
+            System.out.println("-----------------------------------------------");
+            System.out.println("Fetching employee with id " + employeeId);
+            employee = service.getEmployeeWebServiceImplPort().findById(employeeId);
+            printEmployee(employee);
+        } catch (InvalidIdException idExc) {
+            System.err.println("Error message: " + idExc.getFaultInfo().getMessage());
+        } catch (InvalidParameterException ipExc) {
+            System.err.println("Error message: " + ipExc.getFaultInfo().getMessage());
+        } catch (MySQLException sqlExc) {
+            System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
+        }
     }
 
     private static void printEmployees(List<Employee> employees) {
