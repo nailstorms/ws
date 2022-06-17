@@ -1,119 +1,231 @@
 package mnu.service.impl;
 
 import mnu.dao.impl.EmployeeDaoImpl;
+import mnu.exc.InvalidIdException;
+import mnu.exc.InvalidParameterException;
+import mnu.exc.MySQLException;
+import mnu.model.BooleanValue;
 import mnu.model.Employee;
+import mnu.model.IntValue;
 import mnu.service.EmployeeWebService;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@WebService(serviceName = "EmployeeService")
+@Path("/employees")
+@Produces(MediaType.APPLICATION_JSON)
 public class EmployeeWebServiceImpl implements EmployeeWebService {
 
     private final EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
 
-    @WebMethod(operationName = "findAll")
+    @GET
+    @Path("/findAll")
     @Override
-    public List<Employee> findAll() {
+    public List<Employee> findAll() throws MySQLException {
         return employeeDao.findAll();
     }
 
-    @WebMethod(operationName = "findById")
+    @GET
+    @Path("/findById")
     @Override
-    public Employee findById(@WebParam(name = "id") int id) {
+    public Employee findById(@QueryParam("id") int id) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateIntParam("id", id);
         return employeeDao.findById(id);
     }
 
-    @WebMethod(operationName = "findByName")
+    @GET
+    @Path("/findByName")
     @Override
-    public List<Employee> findByName(@WebParam(name = "name") String name) {
+    public List<Employee> findByName(@QueryParam("name") String name) throws InvalidParameterException, MySQLException {
+        validateStrParam("name", name);
         return employeeDao.findByName(name);
     }
 
-    @WebMethod(operationName = "findBySurname")
+    @GET
+    @Path("/findBySurname")
     @Override
-    public List<Employee> findBySurname(@WebParam(name = "surname") String surname) {
+    public List<Employee> findBySurname(@QueryParam("surname") String surname) throws InvalidParameterException, MySQLException {
+        validateStrParam("surname", surname);
         return employeeDao.findBySurname(surname);
     }
 
-    @WebMethod(operationName = "findByGender")
+    @GET
+    @Path("/findByGender")
     @Override
-    public List<Employee> findByGender(@WebParam(name = "gender") String gender) {
+    public List<Employee> findByGender(@QueryParam("gender") String gender) throws InvalidParameterException, MySQLException {
+        validateStrParam("gender", gender);
         return employeeDao.findByGender(gender);
     }
 
-    @WebMethod(operationName = "findByBirthday")
+    @GET
+    @Path("/findByBirthday")
     @Override
-    public List<Employee> findByBirthday(@WebParam(name = "birthday") String birthday) {
+    public List<Employee> findByBirthday(@QueryParam("birthday") String birthday) throws InvalidParameterException, MySQLException {
+        validateStrParam("birthday", birthday);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedBirthday = formatter.parse(birthday);
             return employeeDao.findByBirthday(parsedBirthday);
         } catch (ParseException e) {
-            e.printStackTrace();
+            String message = "Birthday has an incorrect format (should be 'yyyy-MM-dd')";
+            throw new InvalidParameterException(message);
         }
-        return null;
     }
 
-    @WebMethod(operationName = "findBySalary")
+    @GET
+    @Path("/findBySalary")
     @Override
-    public List<Employee> findBySalary(@WebParam(name = "salary") int salary) {
+    public List<Employee> findBySalary(@QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateIntParam("salary", salary);
         return employeeDao.findBySalary(salary);
     }
 
-    @WebMethod(operationName = "findByFullName")
+    @GET
+    @Path("/findByFullName")
     @Override
-    public List<Employee> findByFullName(@WebParam(name = "name") String name,
-                                         @WebParam(name = "surname") String surname) {
+    public List<Employee> findByFullName(@QueryParam("name") String name,
+                                         @QueryParam("surname") String surname) throws InvalidParameterException, MySQLException {
+        validateStrParam("name", name);
+        validateStrParam("surname", surname);
         return employeeDao.findByFullName(name, surname);
     }
 
-    @WebMethod(operationName = "findByNameAndGender")
+    @GET
+    @Path("/findByNameAndGender")
     @Override
-    public List<Employee> findByNameAndGender(@WebParam(name = "name") String name,
-                                              @WebParam(name = "gender") String gender) {
+    public List<Employee> findByNameAndGender(@QueryParam("name") String name,
+                                              @QueryParam("gender") String gender) throws InvalidParameterException, MySQLException {
+        validateStrParam("name", name);
+        validateStrParam("gender", gender);
         return employeeDao.findByNameAndGender(name, gender);
     }
 
-    @WebMethod(operationName = "findByGenderAndBirthday")
+    @GET
+    @Path("/findByGenderAndBirthday")
     @Override
-    public List<Employee> findByGenderAndBirthday(@WebParam(name = "gender") String gender,
-                                                  @WebParam(name = "birthday") String birthday) {
+    public List<Employee> findByGenderAndBirthday(@QueryParam("gender") String gender,
+                                                  @QueryParam("birthday") String birthday) throws InvalidParameterException, MySQLException {
+        validateStrParam("gender", gender);
+        validateStrParam("birthday", birthday);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedBirthday = formatter.parse(birthday);
             return employeeDao.findByGenderAndBirthday(gender, parsedBirthday);
         } catch (ParseException e) {
-            e.printStackTrace();
+            String message = "Birthday has an incorrect format (should be 'yyyy-MM-dd')";
+            throw new InvalidParameterException(message);
         }
-        return null;
     }
 
-    @WebMethod(operationName = "findByGenderAndSalary")
+    @GET
+    @Path("/findByGenderAndSalary")
     @Override
-    public List<Employee> findByGenderAndSalary(@WebParam(name = "gender") String gender,
-                                                @WebParam(name = "salary") int salary) {
+    public List<Employee> findByGenderAndSalary(@QueryParam("gender") String gender,
+                                                @QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateStrParam("gender", gender);
+        validateIntParam("salary", salary);
         return employeeDao.findByGenderAndSalary(gender, salary);
     }
 
-    @WebMethod(operationName = "findByFullInfo")
+    @GET
+    @Path("/findByFullInfo")
     @Override
-    public List<Employee> findByFullInfo(@WebParam(name = "name") String name,
-                                         @WebParam(name = "surname") String surname,
-                                         @WebParam(name = "gender") String gender,
-                                         @WebParam(name = "birthday") String birthday) {
+    public List<Employee> findByFullInfo(@QueryParam("name") String name,
+                                         @QueryParam("surname") String surname,
+                                         @QueryParam("gender") String gender,
+                                         @QueryParam("birthday") String birthday) throws InvalidParameterException, MySQLException {
+        validateStrParam("name", name);
+        validateStrParam("surname", surname);
+        validateStrParam("gender", gender);
+        validateStrParam("birthday", birthday);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedBirthday = formatter.parse(birthday);
             return employeeDao.findByFullInfo(name, surname, gender, parsedBirthday);
         } catch (ParseException e) {
-            e.printStackTrace();
+            String message = "Birthday has an incorrect format (should be 'yyyy-MM-dd')";
+            throw new InvalidParameterException(message);
         }
-        return null;
+    }
+
+    @POST
+    @Path("/create")
+    @Override
+    public IntValue create(@QueryParam("name") String name,
+                           @QueryParam("surname") String surname,
+                           @QueryParam("gender") String gender,
+                           @QueryParam("birthday") String birthday,
+                           @QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateStrParam("name", name);
+        validateStrParam("surname", surname);
+        validateStrParam("gender", gender);
+        validateStrParam("birthday", birthday);
+        validateIntParam("salary", salary);
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedBirthday = formatter.parse(birthday);
+            return new IntValue(employeeDao.create(name, surname, gender, parsedBirthday, salary));
+        } catch (ParseException e) {
+            String message = "Birthday has an incorrect format (should be 'yyyy-MM-dd')";
+            throw new InvalidParameterException(message);
+        }
+    }
+
+    @POST
+    @Path("/update")
+    @Override
+    public BooleanValue update(@QueryParam("id") int id,
+                               @QueryParam("name") String name,
+                               @QueryParam("surname") String surname,
+                               @QueryParam("gender") String gender,
+                               @QueryParam("birthday") String birthday,
+                               @QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateIntParam("id", id);
+        validateStrParam("name", name);
+        validateStrParam("surname", surname);
+        validateStrParam("gender", gender);
+        validateStrParam("birthday", birthday);
+        validateIntParam("salary", salary);
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedBirthday = formatter.parse(birthday);
+            return new BooleanValue(employeeDao.update(id, name, surname, gender, parsedBirthday, salary));
+        } catch (ParseException e) {
+            String message = "Birthday has an incorrect format (should be 'yyyy-MM-dd')";
+            throw new InvalidParameterException(message);
+        }
+    }
+
+    @DELETE
+    @Path("/delete")
+    @Override
+    public BooleanValue delete(@QueryParam("id") int id) throws InvalidIdException, InvalidParameterException, MySQLException {
+        validateIntParam("id", id);
+        return new BooleanValue(employeeDao.delete(id));
+    }
+
+    private void validateStrParam(String paramName, String paramValue) throws InvalidParameterException {
+        if (paramValue == null || paramValue.trim().isEmpty()) {
+            String message = String.format("%s is not specified", paramName);
+            throw new InvalidParameterException(message);
+        }
+    }
+
+    private void validateIntParam(String paramName, int paramValue) throws InvalidIdException, InvalidParameterException {
+        if (paramName.equals("id")) {
+            if (paramValue < 1) {
+                String message = String.format("%s cannot be less than 1", paramName);
+                throw new InvalidIdException(message);
+            }
+        } else {
+            if (paramValue < 1) {
+                String message = String.format("%s cannot be less than 1", paramName);
+                throw new InvalidParameterException(message);
+            }
+        }
     }
 }

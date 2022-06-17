@@ -1,4 +1,4 @@
-package mnu.model;
+package itmo.mnu.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
