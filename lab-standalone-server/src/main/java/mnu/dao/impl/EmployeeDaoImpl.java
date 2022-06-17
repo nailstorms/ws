@@ -1,8 +1,6 @@
 package mnu.dao.impl;
 
 import mnu.dao.EmployeeDao;
-import mnu.exc.InvalidIdException;
-import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
 import mnu.model.Employee;
 import mnu.service.EmployeeServiceFault;
