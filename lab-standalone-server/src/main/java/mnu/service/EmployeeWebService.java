@@ -3,6 +3,7 @@ package mnu.service;
 import mnu.exc.InvalidIdException;
 import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
+import mnu.exc.UnauthorizedUserException;
 import mnu.model.Employee;
 
 import java.util.Date;
@@ -33,9 +34,9 @@ public interface EmployeeWebService {
 
     public List<Employee> findByFullInfo(String name, String surname, String gender, String birthday) throws InvalidParameterException, MySQLException;
 
-    public int create(String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public int create(String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException;
 
-    public boolean update(int id, String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public boolean update(int id, String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException;
 
-    public boolean delete(int id) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public boolean delete(int id) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException;
 }

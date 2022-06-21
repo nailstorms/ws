@@ -4,21 +4,28 @@ import mnu.dao.impl.EmployeeDaoImpl;
 import mnu.exc.InvalidIdException;
 import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
+import mnu.exc.UnauthorizedUserException;
 import mnu.model.Employee;
 import mnu.service.EmployeeServiceFault;
 import mnu.service.EmployeeWebService;
 
+import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @WebService(serviceName = "EmployeeService")
 public class EmployeeWebServiceImpl implements EmployeeWebService {
 
+    @Resource
+    WebServiceContext context;
     private final EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
 
     @WebMethod(operationName = "findAll")
@@ -151,7 +158,8 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                       @WebParam(name = "surname") String surname,
                       @WebParam(name = "gender") String gender,
                       @WebParam(name = "birthday") String birthday,
-                      @WebParam(name = "salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+                      @WebParam(name = "salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException {
+        checkCredentials();
         validateStrParam("name", name);
         validateStrParam("surname", surname);
         validateStrParam("gender", gender);
@@ -176,7 +184,8 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                           @WebParam(name = "surname") String surname,
                           @WebParam(name = "gender") String gender,
                           @WebParam(name = "birthday") String birthday,
-                          @WebParam(name = "salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+                          @WebParam(name = "salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException {
+        checkCredentials();
         validateIntParam("id", id);
         validateStrParam("name", name);
         validateStrParam("surname", surname);
@@ -197,7 +206,8 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
 
     @WebMethod(operationName = "delete")
     @Override
-    public boolean delete(@WebParam(name = "id") int id) throws InvalidIdException, InvalidParameterException, MySQLException {
+    public boolean delete(@WebParam(name = "id") int id) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException {
+        checkCredentials();
         validateIntParam("id", id);
         return employeeDao.delete(id);
     }
@@ -226,6 +236,32 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                 fault.setMessage(message);
                 throw new InvalidParameterException(message, fault);
             }
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void checkCredentials() throws UnauthorizedUserException {
+        MessageContext messageContext = context.getMessageContext();
+        Map http_headers = (Map) messageContext.get(MessageContext.HTTP_REQUEST_HEADERS);
+
+        List userList = (List) http_headers.get("Username");
+        List passList = (List) http_headers.get("Password");
+
+        String username = "";
+        String password = "";
+
+        if (userList != null) {
+            username = userList.get(0).toString();
+        }
+        if (passList != null) {
+            password = passList.get(0).toString();
+        }
+
+        if (!username.equals("test") || !password.equals("test")) {
+            String message = "Invalid credentials";
+            EmployeeServiceFault fault = EmployeeServiceFault.defaultInstance();
+            fault.setMessage(message);
+            throw new UnauthorizedUserException("Invalid credentials", fault);
         }
     }
 }

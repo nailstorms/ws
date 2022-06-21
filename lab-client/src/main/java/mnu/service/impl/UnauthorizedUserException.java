@@ -10,8 +10,8 @@ import javax.xml.ws.WebFault;
  * Generated source version: 2.2
  * 
  */
-@WebFault(name = "InvalidParameterException", targetNamespace = "http://impl.service.mnu/")
-public class InvalidParameterException
+@WebFault(name = "UnauthorizedUserException", targetNamespace = "http://impl.service.mnu/")
+public class UnauthorizedUserException
     extends Exception
 {
 
@@ -26,7 +26,7 @@ public class InvalidParameterException
      * @param faultInfo
      * @param message
      */
-    public InvalidParameterException(String message, EmployeeServiceFault faultInfo) {
+    public UnauthorizedUserException(String message, EmployeeServiceFault faultInfo) {
         super(message);
         this.faultInfo = faultInfo;
     }
@@ -37,7 +37,7 @@ public class InvalidParameterException
      * @param cause
      * @param message
      */
-    public InvalidParameterException(String message, EmployeeServiceFault faultInfo, Throwable cause) {
+    public UnauthorizedUserException(String message, EmployeeServiceFault faultInfo, Throwable cause) {
         super(message, cause);
         this.faultInfo = faultInfo;
     }
