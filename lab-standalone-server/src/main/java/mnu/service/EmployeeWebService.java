@@ -5,6 +5,7 @@ import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
 import mnu.model.Employee;
 
+import javax.activation.DataHandler;
 import java.util.Date;
 import java.util.List;
 
@@ -38,4 +39,6 @@ public interface EmployeeWebService {
     public boolean update(int id, String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException;
 
     public boolean delete(int id) throws InvalidIdException, InvalidParameterException, MySQLException;
+
+    public DataHandler getEmbedImage();
 }

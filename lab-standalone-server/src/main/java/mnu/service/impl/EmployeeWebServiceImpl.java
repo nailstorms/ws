@@ -8,6 +8,8 @@ import mnu.model.Employee;
 import mnu.service.EmployeeServiceFault;
 import mnu.service.EmployeeWebService;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -200,6 +202,12 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
     public boolean delete(@WebParam(name = "id") int id) throws InvalidIdException, InvalidParameterException, MySQLException {
         validateIntParam("id", id);
         return employeeDao.delete(id);
+    }
+
+    @WebMethod(operationName = "getEmbedImage")
+    @Override
+    public DataHandler getEmbedImage() {
+        return new DataHandler(new FileDataSource("test.png"));
     }
 
     private void validateStrParam(String paramName, String paramValue) throws InvalidParameterException {

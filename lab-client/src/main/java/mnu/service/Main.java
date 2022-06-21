@@ -3,12 +3,18 @@ package mnu.service;
 
 import mnu.service.impl.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) throws IOException {
         System.out.println("Using standalone server config.");
 
         String urlString = "http://localhost:8080/EmployeeService?wsdl";
@@ -106,6 +112,12 @@ public class Main {
         } catch (MySQLException sqlExc) {
             System.err.println("Error message: " + sqlExc.getFaultInfo().getMessage());
         }
+
+        byte[] image = service.getEmployeeWebServiceImplPort().getEmbedImage();
+        OutputStream out = Files.newOutputStream(Paths.get("test.png"));
+        out.write(image);
+        out.flush();
+        out.close();
     }
 
     private static void printEmployees(List<Employee> employees) {
