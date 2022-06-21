@@ -3,10 +3,12 @@ package mnu.service;
 import mnu.exc.InvalidIdException;
 import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
+import mnu.exc.UnauthorizedUserException;
 import mnu.model.BooleanValue;
 import mnu.model.Employee;
 import mnu.model.IntValue;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface EmployeeWebService {
@@ -34,9 +36,9 @@ public interface EmployeeWebService {
 
     public List<Employee> findByFullInfo(String name, String surname, String gender, String birthday) throws InvalidParameterException, MySQLException;
 
-    public IntValue create(String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public IntValue create(String name, String surname, String gender, String birthday, int salary, String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException;
 
-    public BooleanValue update(int id, String name, String surname, String gender, String birthday, int salary) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public BooleanValue update(int id, String name, String surname, String gender, String birthday, int salary, String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException;
 
-    public BooleanValue delete(int id) throws InvalidIdException, InvalidParameterException, MySQLException;
+    public BooleanValue delete(int id, String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException;
 }

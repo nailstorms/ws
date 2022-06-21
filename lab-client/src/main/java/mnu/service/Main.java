@@ -5,6 +5,7 @@ import mnu.service.exc.ParamException;
 import mnu.service.model.Employee;
 import mnu.service.request.RequestService;
 
+import javax.naming.AuthenticationException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,13 +17,13 @@ public class Main {
         List<Employee> employeeList;
         int employeeId;
         boolean result;
-        /*
+
         try {
             System.out.println("-----------------------------------------------");
             System.out.println("Fetching all employees.");
             employeeList = RequestService.findAllEmployees(client);
             printEmployees(employeeList);
-        } catch (SQLException | ParamException e) {
+        } catch (SQLException | ParamException | AuthenticationException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
 
@@ -31,7 +32,7 @@ public class Main {
             System.out.println("Fetching employee by id -1.");
             employee = RequestService.findEmployeeById(client, -1);
             printEmployee(employee);
-        } catch (SQLException | ParamException e) {
+        } catch (SQLException | ParamException | AuthenticationException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
 
@@ -40,7 +41,7 @@ public class Main {
             System.out.println("Fetching employee by inexistent name.");
             employeeList = RequestService.findEmployeesByName(client,null);
             printEmployees(employeeList);
-        } catch (SQLException | ParamException e) {
+        } catch (SQLException | ParamException | AuthenticationException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
         
@@ -49,7 +50,7 @@ public class Main {
             System.out.println("Fetching employee by passing gibberish in birthday.");
             employeeList = RequestService.findEmployeesByBirthday(client,"jkdnfgrfjngkh");
             printEmployees(employeeList);
-        } catch (SQLException | ParamException e) {
+        } catch (SQLException | ParamException | AuthenticationException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
         
@@ -88,11 +89,11 @@ public class Main {
             System.out.println("Fetching employee with id " + employeeId);
             employee = RequestService.findEmployeeById(client, employeeId);
             printEmployee(employee);
-        } catch (SQLException | ParamException e) {
+        } catch (SQLException | ParamException | AuthenticationException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
-*/
 
+/*
         // ------------------ FOR J2EE --------------------
         try {
             System.out.println("-----------------------------------------------");
@@ -157,7 +158,7 @@ public class Main {
         } catch (SQLException | ParamException e) {
             System.out.println("An exception appeared: " + e.getMessage() + "; " + e.getClass());
         }
-
+*/
     }
 
     private static void printEmployees(List<Employee> employees) {

@@ -4,6 +4,7 @@ import mnu.dao.impl.EmployeeDaoImpl;
 import mnu.exc.InvalidIdException;
 import mnu.exc.InvalidParameterException;
 import mnu.exc.MySQLException;
+import mnu.exc.UnauthorizedUserException;
 import mnu.model.BooleanValue;
 import mnu.model.Employee;
 import mnu.model.IntValue;
@@ -11,8 +12,10 @@ import mnu.service.EmployeeWebService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -159,7 +162,9 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                            @QueryParam("surname") String surname,
                            @QueryParam("gender") String gender,
                            @QueryParam("birthday") String birthday,
-                           @QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+                           @QueryParam("salary") int salary,
+                           @HeaderParam("Authorization") String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException {
+        validateAuthentication(auth);
         validateStrParam("name", name);
         validateStrParam("surname", surname);
         validateStrParam("gender", gender);
@@ -183,7 +188,9 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                                @QueryParam("surname") String surname,
                                @QueryParam("gender") String gender,
                                @QueryParam("birthday") String birthday,
-                               @QueryParam("salary") int salary) throws InvalidIdException, InvalidParameterException, MySQLException {
+                               @QueryParam("salary") int salary,
+                               @HeaderParam("Authorization") String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException {
+        validateAuthentication(auth);
         validateIntParam("id", id);
         validateStrParam("name", name);
         validateStrParam("surname", surname);
@@ -203,7 +210,9 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
     @DELETE
     @Path("/delete")
     @Override
-    public BooleanValue delete(@QueryParam("id") int id) throws InvalidIdException, InvalidParameterException, MySQLException {
+    public BooleanValue delete(@QueryParam("id") int id,
+                               @HeaderParam("Authorization") String auth) throws InvalidIdException, InvalidParameterException, MySQLException, UnauthorizedUserException, UnsupportedEncodingException {
+        validateAuthentication(auth);
         validateIntParam("id", id);
         return new BooleanValue(employeeDao.delete(id));
     }
@@ -226,6 +235,15 @@ public class EmployeeWebServiceImpl implements EmployeeWebService {
                 String message = String.format("%s cannot be less than 1", paramName);
                 throw new InvalidParameterException(message);
             }
+        }
+    }
+
+    private void validateAuthentication(String auth) throws UnauthorizedUserException, UnsupportedEncodingException {
+        String[] tokens = (new String(Base64.getDecoder().decode(auth.split(" ")[1]), "UTF-8"))
+                .split(":");
+
+        if (!tokens[0].equals("test") || !tokens[1].equals("test")) {
+            throw UnauthorizedUserException.DEFAULT_INSTANCE;
         }
     }
 }
